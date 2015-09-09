@@ -22,12 +22,17 @@ function onRequest(req, res) {
   }
   // If user submits name via JSON data:
   if(req.method == 'POST' && req.url == '/greet') {
-    res.writeHead(200, {"Content-Type": "text/plain"});
+    var parsed;
     req.on('data', function(data) {
-      var parsed = JSON.parse(data.toString());
-      res.write('Hello, ' + parsed.name + '!');
-      res.end();
+      parsed = JSON.parse(data);
+      parsed = parsed.name;
     });
+    req.on('end', function() {
+      res.writeHead(200, {"Content-Type": "text/plain"});
+      res.write("Hello, " + parsed + "!");
+      return res.end();
+    });
+    return;
   }
 
   res.writeHead(404, {"Content-Type": "text/plain"});
