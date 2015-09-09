@@ -1,18 +1,23 @@
-var expect = require('chai').expect;
+var chai = require('chai');
+var expect = chai.expect;
 var chaiHttp = require('chai-http');
+var fs = require('fs');
+var server = require(__dirname + "/../server");
 chai.use(chaiHttp);
 require(__dirname + '/../server');
 
 describe('TCP server', function() {
-  it('should respond to a request', function(done) {
+  var first;
+  var second;
+  before(function(done) {
+    first = fs.readdirSync(__dirname + "/../requests").length;
     chai.request('localhost:8888')
-      .get('/anywhere')
-      .end(function(err, res) {
-        expect(err).to.eql(null);
-        expect(res.status).to.eql(200);
-        expect(res.text).to.eql('');
-        done();
-      });
+      .get('/sdf')
+      .end();
+  });
+  it('should save a file when called on', function(done) {
+    second = fs.readdirSync(__dirname + "/../requests").length;
+    expect(first).to.be.lower(second);
   });
 });
 
