@@ -1,0 +1,28 @@
+{
+  "name": "tcp_server",
+  "version": "0.1.0",
+  "description": "Proof of concept TCP server",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eluetkehans/sea-d49.git"
+  },
+  "author": "eluetkehans@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Eluetkehans/sea-d49/issues"
+  },
+  "homepage": "https://github.com/Eluetkehans/sea-d49#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-mocha": "^2.1.3"
+  }
+}
