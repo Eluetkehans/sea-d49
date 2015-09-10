@@ -38,6 +38,27 @@ describe('http server', function() {
         done();
       });
   });
+  it('should accept JSON and reply with saved JSON files', function(done) {
+    chai.request('localhost:8888')
+      .post('/notes')
+      .send(JSON.stringify({"name": "you"}))
+      .end(function(err, res) {
+        expect(err).to.eql(null);
+        expect(res.status).to.eql(200);
+        expect(res.text).to.eql("JSON saved");
+        done();
+      });
+  });
+  it('should print the files saved in data', function(done) {
+    chai.request('localhost:8888')
+      .get('/notes')
+      .end(function(err, res) {
+        expect(err).to.eql(null);
+        expect(res.status).to.eql(200);
+        expect(res.text).to.eql("The files " + files + " are saved to server");
+        done();
+      });
+  });
   it('should 404 when an unrecognized route is given', function(done) {
     chai.request('localhost:8888')
       .get('/not/here')

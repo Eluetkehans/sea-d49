@@ -1,6 +1,7 @@
 'use strict';
 
 var http = require('http');
+var fs = require('fs');
 
 function onRequest(req, res) {
   if(req.method == 'GET' && req.url == '/time') {
@@ -31,6 +32,34 @@ function onRequest(req, res) {
       res.writeHead(200, {"Content-Type": "text/plain"});
       res.write("Hello, " + parsed + "!");
       return res.end();
+    });
+    return;
+  }
+
+  if(req.method == 'POST' && req.url == '/notes') {
+    var parsed;
+    req.on('data', function(data) {
+      parsed = JSON.parse(data);
+      fs.readdir(__dirname + "/data", function(err, files) {
+        fs.write(__dirname + "/" + files.length + ".JSON", parsed, callback() {
+          if(err) return err
+        });
+      });
+    });
+    req.on('end', function() {
+      res.writeHead(200, {"Content-Type": "text/plain"});
+      res.write("JSON saved");
+      return res.end;
+    });
+    return;
+  }
+
+  if(req.method == 'GET' && req.url == '/notes') {
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    var files = fs.readdir(__dirname + "/data", function(err, files) {
+      if(err) return err;
+      res.write("The files " + files + " are saved to server");
+      return res.end;
     });
     return;
   }
