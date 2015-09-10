@@ -1,5 +1,6 @@
 'use strict';
 
+var fs = require('fs');
 var chai = require('chai');
 var expect = chai.expect;
 var chaiHttp = require('chai-http');
@@ -36,13 +37,17 @@ describe('http server', function() {
         expect(res.status).to.eql(200);
         expect(res.text).to.eql("Hello, you!");
         done();
-      });
+       });
   });
   it('should accept JSON and reply with saved JSON files', function(done) {
+    var first = fs.readdirSync(__dirname + "/../data").length;
+    var second;
     chai.request('localhost:8888')
       .post('/notes')
       .send(JSON.stringify({"name": "you"}))
       .end(function(err, res) {
+        second = fs.readdirSync(__dirname + "/../data").length;
+        expect(first + 1).to.be.eql(second);
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
         expect(res.text).to.eql("JSON saved");
@@ -55,7 +60,8 @@ describe('http server', function() {
       .end(function(err, res) {
         expect(err).to.eql(null);
         expect(res.status).to.eql(200);
-        expect(res.text).to.eql("The files " + files + " are saved to server");
+        expect(res.text).to.eql("The files " + fs.readdirSync(__dirname + "/../data") 
+                                 + " are saved to server");
         done();
       });
   });
